@@ -31,7 +31,7 @@ const unsigned int  TX_ID = 0x100;
 #include "CANMsg.h"
 
 Serial              pc(SERIAL_TX, SERIAL_RX);
-CAN                 can(PB_8, PB_9);
+CAN                 can(CAN_RX, CAN_TX);
 CANMsg              rxMsg;
 CANMsg              txMsg;
 DigitalOut          led(LED1);
@@ -80,9 +80,9 @@ int main(void)
             counter++;                   // increment counter
             txMsg.clear();               // clear Tx message storage
             txMsg.id = TX_ID;            // set ID
-            txMsg << counter; // append data (total data length must not exceed 8 bytes!)
+            txMsg << counter;            // append data (total data length must not exceed 8 bytes!)
             if(can.write(txMsg)) {       // transmit message
-                led = 0;               // turn the LED off
+                led = 0;                 // turn the LED off
                 pc.printf("-------------------------------------\r\n");
                 pc.printf("CAN message sent\r\n");
                 printMsg(txMsg);
